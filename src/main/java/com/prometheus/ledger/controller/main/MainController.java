@@ -17,4 +17,10 @@ public class MainController {
         return "index";
     }
 
+    @RequestMapping(value = {"/1"}, method = RequestMethod.GET)
+    public String page(HttpServletRequest request, HttpServletResponse response, Model model){
+        response.setStatus(HttpServletResponse.SC_OK);
+        return "error/error";
+    }
+
 }
