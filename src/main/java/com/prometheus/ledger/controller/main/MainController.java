@@ -17,7 +17,7 @@ public class MainController {
         return "index";
     }
 
-    @RequestMapping(value = {"/error"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/ee"}, method = RequestMethod.GET)
     public String errorPage(HttpServletRequest request, HttpServletResponse response, Model model){
         response.setStatus(HttpServletResponse.SC_OK);
         return "error/error";
