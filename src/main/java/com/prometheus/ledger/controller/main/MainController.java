@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class MainController {
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = {"/","/index"}, method = RequestMethod.GET)
     public String mainPage(HttpServletRequest request, HttpServletResponse response, Model model){
         response.setStatus(HttpServletResponse.SC_OK);
         return "index";
