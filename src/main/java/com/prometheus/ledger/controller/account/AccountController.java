@@ -28,7 +28,6 @@ public class AccountController {
     public String ledgerMainPage(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam Map<String, String> param) throws Throwable{
         QueryAccountListResult result = accountFacade.queryAccount(buildQueryAccountListRequest(param));
         model.addAttribute(ACCOUNTS, result.toJsonObject());
-        System.out.println(JSONUtil.toJsonObject(param));
 
         response.setStatus(HttpServletResponse.SC_OK);
         return "account/home";
