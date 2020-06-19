@@ -4,6 +4,13 @@
        xsi:schemaLocation = "http://www.springframework.org/schema/beans
    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-
+    <bean id="queryAccountListProcessor" class="com.prometheus.ledger.service.impl.account.processor.QueryAccountListProcessor"/>
+    <bean id="accountFacade" class="com.prometheus.ledger.service.impl.account.AccountFacadeImpl">
+        <property name="queryAccountListProcessors">
+            <list>
+                <ref bean="queryAccountListProcessor"/>
+            </list>
+        </property>
+    </bean>
 
 </beans>
