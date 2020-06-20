@@ -5,19 +5,19 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="../../index2.html"><b>Prometheus</b> Ledger</a>
+        <a href="../../index2.html"><b>Prometheus</b>LEDGER</a>
     </div>
     <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
             <p class="login-box-msg">Sign in to start your session</p>
             <div th:if="${message}!=null">
-            <p class="login-box-msg" th:text="${message}"></p>
+                <p class="login-box-msg" th:text="${message}"></p>
             </div>
 
             <form action="/login" method="post">
                 <div class="input-group mb-3">
-                    <input type="text" name="username" class="form-control" placeholder="Email / Username">
+                    <input type="text" name="username" class="form-control" placeholder="Email / Username" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    <input type="password" name="password" class="form-control" placeholder="Password" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>

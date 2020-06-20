@@ -3,9 +3,7 @@ package com.prometheus.ledger.service.impl.member.processor;
 import com.prometheus.ledger.core.model.Member;
 import com.prometheus.ledger.core.model.Processor;
 import com.prometheus.ledger.core.model.error.ErrorCode;
-import com.prometheus.ledger.core.util.AssertUtil;
-import com.prometheus.ledger.core.util.CollectionUtil;
-import com.prometheus.ledger.core.util.StringUtil;
+import com.prometheus.ledger.core.util.*;
 import com.prometheus.ledger.repository.member.MemberRepository;
 import com.prometheus.ledger.repository.member.entity.MemberDTO;
 import com.prometheus.ledger.service.facade.member.request.CheckLoginRequest;
@@ -45,7 +43,7 @@ public class CheckLoginProcessor implements Processor<CheckLoginContext> {
         }
 
         Member member = dtoList.parallelStream()
-                .filter(dto -> StringUtil.isBlank(dto.getMemberId()))
+                .filter(dto -> StringUtil.isNotBlank(dto.getMemberId()))
                 .map(dto -> {
                     Member member1 = Member.builder()
                             .userId(dto.getMemberId())
