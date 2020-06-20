@@ -3,9 +3,7 @@ package com.prometheus.ledger.service.impl.member.processor;
 import com.prometheus.ledger.core.model.Member;
 import com.prometheus.ledger.core.model.Processor;
 import com.prometheus.ledger.core.model.error.ErrorCode;
-import com.prometheus.ledger.core.util.AssertUtil;
-import com.prometheus.ledger.core.util.CollectionUtil;
-import com.prometheus.ledger.core.util.StringUtil;
+import com.prometheus.ledger.core.util.*;
 import com.prometheus.ledger.repository.member.MemberRepository;
 import com.prometheus.ledger.repository.member.entity.MemberDTO;
 import com.prometheus.ledger.service.facade.member.request.CheckLoginRequest;
@@ -38,15 +36,19 @@ public class CheckLoginProcessor implements Processor<CheckLoginContext> {
         CheckLoginRequest request = (CheckLoginRequest) context.getRequest();
         CheckLoginResult result = (CheckLoginResult) context.getResult();
 
-        List<MemberDTO> dtoList = memberRepository.findByUsernameAndPassword(request.getUsername(), request.getPassword());
+        String password = EncryptionUtil.sha256Hash(request.getPassword());
+        List<MemberDTO> dtoList = memberRepository.findByUsernameAndPassword(request.getUsername(), password);
         if(CollectionUtil.isEmpty(dtoList)){
             result.setSuccess(false);
             return;
         }
 
+        System.out.println(JSONUtil.toJsonString(dtoList));
+
         Member member = dtoList.parallelStream()
-                .filter(dto -> StringUtil.isBlank(dto.getMemberId()))
+                .filter(dto -> StringUtil.isNotBlank(dto.getMemberId()))
                 .map(dto -> {
+                    System.out.println(JSONUtil.toJsonString(dto));
                     Member member1 = Member.builder()
                             .userId(dto.getMemberId())
                             .username(dto.getUsername())
@@ -55,6 +57,8 @@ public class CheckLoginProcessor implements Processor<CheckLoginContext> {
                             .build();
                     return member1;
                 }).findFirst().orElse(null);
+
+        System.out.println(JSONUtil.toJsonString(member));
 
         AssertUtil.isNotNull(member, ErrorCode.SYSTEM_ERROR, "memberIsNull");
         result.setUserId(member.getUserId());

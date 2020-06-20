@@ -28,9 +28,9 @@ public class LoginController {
     private MemberFacade memberFacade;
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
     public String loginPage(HttpServletRequest request, HttpServletResponse response, Model model){
-        response.setStatus(HttpServletResponse.SC_OK);
-
+        System.out.println(model);
         return "login";
     }
 
@@ -47,6 +47,12 @@ public class LoginController {
             page = LoginControllerHelper.buildRedirectPage(result, model);
         }
         return page;
+    }
+
+    @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    public String registerPage(HttpServletRequest request, HttpServletResponse response, Model model){
+        return "register";
     }
 
 }
