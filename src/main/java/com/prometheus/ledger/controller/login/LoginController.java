@@ -1,5 +1,6 @@
 package com.prometheus.ledger.controller.login;
 
+import com.prometheus.ledger.core.util.EncryptionUtil;
 import com.prometheus.ledger.core.util.JSONUtil;
 import com.prometheus.ledger.core.util.StringUtil;
 import com.prometheus.ledger.service.facade.member.MemberFacade;
@@ -42,7 +43,7 @@ public class LoginController {
         if (StringUtil.isEqual(body.get("submit"), SIGN_IN)){
             CheckLoginResult result = memberFacade.checkLogin(CheckLoginRequest.builder()
                     .username(body.get(USERNAME))
-                    .password(body.get(PASSWORD))
+                    .password(EncryptionUtil.sha256Hash(body.get(PASSWORD)))
                     .build());
             page = LoginControllerHelper.buildRedirectPage(result, model);
         }

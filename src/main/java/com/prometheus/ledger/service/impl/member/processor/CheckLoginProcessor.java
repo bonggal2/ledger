@@ -36,8 +36,7 @@ public class CheckLoginProcessor implements Processor<CheckLoginContext> {
         CheckLoginRequest request = (CheckLoginRequest) context.getRequest();
         CheckLoginResult result = (CheckLoginResult) context.getResult();
 
-        String password = EncryptionUtil.sha256Hash(request.getPassword());
-        List<MemberDTO> dtoList = memberRepository.findByUsernameAndPassword(request.getUsername(), password);
+        List<MemberDTO> dtoList = memberRepository.findByUsernameAndPassword(request.getUsername(), request.getPassword());
         if(CollectionUtil.isEmpty(dtoList)){
             result.setSuccess(false);
             return;
