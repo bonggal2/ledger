@@ -13,4 +13,19 @@
         </property>
     </bean>
 
+    <bean id="queryMemberProcessor" class="com.prometheus.ledger.service.impl.member.processor.QueryMemberProcessor"/>
+    <bean id="checkLoginProcessor" class="com.prometheus.ledger.service.impl.member.processor.CheckLoginProcessor"/>
+    <bean id="memberFacade" class="com.prometheus.ledger.service.impl.member.MemberFacadeImpl">
+        <property name="queryMemberProcessors">
+            <list>
+                <ref bean="queryMemberProcessor"/>
+            </list>
+        </property>
+        <property name="checkLoginProcessors">
+            <list>
+                <ref bean="checkLoginProcessor"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>
