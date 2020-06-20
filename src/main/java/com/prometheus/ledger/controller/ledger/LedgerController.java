@@ -14,21 +14,8 @@ public class LedgerController {
 
     private static final String TOTAL_EXPENSES = "totalExpenses";
 
-    @RequestMapping(value = {"/home","/"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"/home"}, method = RequestMethod.GET)
     public String ledgerMainPage(HttpServletRequest request, HttpServletResponse response, Model model){
-
-        // getTotalExpenses
-        // getTotalIncomes
-        // getCategorizeExpenses
-        // getCategorizeIncomes
-        model.addAttribute(TOTAL_EXPENSES, "");
-
-        response.setStatus(HttpServletResponse.SC_OK);
-        return "ledger/home";
-    }
-
-    @RequestMapping(value = "/account", method = RequestMethod.GET)
-    public String accountPage(HttpServletRequest request, HttpServletResponse response, Model model){
 
         // getTotalExpenses
         // getTotalIncomes
