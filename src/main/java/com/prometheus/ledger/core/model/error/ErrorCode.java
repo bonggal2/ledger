@@ -3,6 +3,7 @@ package com.prometheus.ledger.core.model.error;
 public enum ErrorCode implements BaseErrorCode{
 
     SYSTEM_ERROR("E001", "System error"),
+    PARAM_ILLEGAL("E002", "Param illegal"),
     ;
 
     private final String errorCode;

@@ -70,6 +70,18 @@
 			<version>1.18.4</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- encryption -->
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.3</version>
+		</dependency>
+		<!-- Hashing -->
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.11</version>
+		</dependency>
 	</dependencies>
 
 	<build>

@@ -25,6 +25,9 @@ public class AccountDTO {
     @Column(name = "account_desc")
     private String accountDesc;
 
+    @Column(name = "user_id")
+    private String userId;
+
     public String getAccountId() {
         return accountId;
     }
@@ -63,5 +66,13 @@ public class AccountDTO {
 
     public void setAccountDesc(String accountDesc) {
         this.accountDesc = accountDesc;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }
