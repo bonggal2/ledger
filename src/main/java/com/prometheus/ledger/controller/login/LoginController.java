@@ -6,6 +6,7 @@ import com.prometheus.ledger.core.util.StringUtil;
 import com.prometheus.ledger.service.facade.member.MemberFacade;
 import com.prometheus.ledger.service.facade.member.request.CheckLoginRequest;
 import com.prometheus.ledger.service.facade.member.result.CheckLoginResult;
+import com.prometheus.ledger.service.facade.member.result.RegisterMemberResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -22,6 +23,7 @@ import java.util.Map;
 @Controller
 public class LoginController {
     private static final String SIGN_IN = "Sign In";
+    private static final String REGISTER = "Register";
     private static final String USERNAME = "username";
     private static final String PASSWORD = "password";
 
@@ -31,7 +33,6 @@ public class LoginController {
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public String loginPage(HttpServletRequest request, HttpServletResponse response, Model model){
-        System.out.println(model);
         return "login";
     }
 
@@ -53,6 +54,25 @@ public class LoginController {
     @ResponseStatus(value = HttpStatus.OK)
     public String registerPage(HttpServletRequest request, HttpServletResponse response, Model model){
         return "register";
+    }
+
+    @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
+    @ResponseStatus(value = HttpStatus.OK)
+    public String registerPost(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam Map<String, String> body){
+        String page = "register";
+
+        if (StringUtil.isEqual(body.get("submit"), REGISTER)){
+            boolean pwd = LoginControllerHelper.isPasswordSame(body.get("password"), body.get("repassword"), model);
+            if (!pwd){
+                return page;
+            }
+
+            RegisterMemberResult result = memberFacade.registerMember(LoginControllerHelper.buildRegisterMemberRequest(body));
+            if (result.isSuccess()){
+                page = "index";
+            }
+        }
+        return page;
     }
 
 }
