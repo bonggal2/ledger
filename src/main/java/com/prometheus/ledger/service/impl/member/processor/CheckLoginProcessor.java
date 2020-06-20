@@ -42,12 +42,9 @@ public class CheckLoginProcessor implements Processor<CheckLoginContext> {
             return;
         }
 
-        System.out.println(JSONUtil.toJsonString(dtoList));
-
         Member member = dtoList.parallelStream()
                 .filter(dto -> StringUtil.isNotBlank(dto.getMemberId()))
                 .map(dto -> {
-                    System.out.println(JSONUtil.toJsonString(dto));
                     Member member1 = Member.builder()
                             .userId(dto.getMemberId())
                             .username(dto.getUsername())
@@ -56,8 +53,6 @@ public class CheckLoginProcessor implements Processor<CheckLoginContext> {
                             .build();
                     return member1;
                 }).findFirst().orElse(null);
-
-        System.out.println(JSONUtil.toJsonString(member));
 
         AssertUtil.isNotNull(member, ErrorCode.SYSTEM_ERROR, "memberIsNull");
         result.setUserId(member.getUserId());

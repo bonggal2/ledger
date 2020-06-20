@@ -38,7 +38,6 @@ public class LoginController {
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
     public String loginPost(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam Map<String, String> body){
-        System.out.println("body: " + JSONUtil.toJsonObject(body));
         String page = "index";
         if (StringUtil.isEqual(body.get("submit"), SIGN_IN)){
             CheckLoginResult result = memberFacade.checkLogin(CheckLoginRequest.builder()
