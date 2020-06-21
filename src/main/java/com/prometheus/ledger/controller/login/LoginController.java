@@ -34,6 +34,9 @@ public class LoginController {
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public String loginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+        if(StringUtil.isNotBlank(sessionService.getLoginSession(request.getSession()).getUserId())){
+            return "redirect:/index";
+        }
         return "login";
     }
 
@@ -67,18 +70,21 @@ public class LoginController {
     @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
     public String registerPage(HttpServletRequest request, HttpServletResponse response, Model model) {
+        if(StringUtil.isNotBlank(sessionService.getLoginSession(request.getSession()).getUserId())){
+            return "redirect:/index";
+        }
         return "register";
     }
 
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public String registerPost(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam Map<String, String> body) {
+    public String registerPost(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam Map<String, String> body) throws Throwable{
         String page = "register";
 
         if (StringUtil.isEqual(body.get("submit"), REGISTER)) {
             boolean pwd = LoginControllerHelper.isPasswordSame(body.get("password"), body.get("repassword"), model);
             if (!pwd) {
-                return "redirect:/" + page;
+                return registerPage(request, response, model);
             }
 
             RegisterMemberResult result = memberFacade.registerMember(LoginControllerHelper.buildRegisterMemberRequest(body));
@@ -87,7 +93,16 @@ public class LoginController {
                 sessionService.saveLoginSession(request.getSession(), result.getUserId());
             }
         }
+        response.sendRedirect(page);
         return "redirect:/" + page;
+    }
+
+    @RequestMapping(value = {"/logout"}, method = RequestMethod.GET)
+    public String logout(HttpServletRequest request, HttpServletResponse response) throws Throwable{
+        if(null != request.getSession()){
+            request.getSession().invalidate();
+        }
+        return "redirect:/index";
     }
 
     // this method is to avoid browser return 404
