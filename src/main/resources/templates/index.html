@@ -3,7 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+    <meta http-equiv="X-UA-Compatible">
+    <link rel="icon" href="#">
 
     <title>Prometheus Ledger</title>
 
@@ -32,6 +33,7 @@
 
     <main role="main" class="inner cover">
         <h1 class="cover-heading">Prometheus Ledger</h1>
+        <h1 class="cover-heading" th:if="${userId}!=null" th:text="${userId}"></h1>
         <p class="lead">Prometheus ledger is a web based application to help you keeping and maintaining all of your transaction and finance information.</p>
         <p class="lead">
             <a href="/ledger/home" class="btn btn-lg btn-secondary">Go to Ledger</a>
@@ -49,9 +51,9 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" crossorigin="anonymous"></script>-->
+<!--<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>-->
 <!--<script src="../../assets/js/vendor/popper.min.js"></script>-->
-<script src="@{/dist/js/bootstrap/bootstrap.min.js}"></script>
+<script th:src="@{/dist/js/bootstrap/bootstrap.min.js}"></script>
 </body>
 </html>
