@@ -1,6 +1,7 @@
 package com.prometheus.ledger.controller.login;
 
 import com.prometheus.ledger.core.util.EncryptionUtil;
+import com.prometheus.ledger.core.util.JSONUtil;
 import com.prometheus.ledger.core.util.StringUtil;
 import com.prometheus.ledger.service.common.session.SessionService;
 import com.prometheus.ledger.service.facade.member.MemberFacade;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,61 +33,67 @@ public class LoginController {
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public String loginPage(HttpServletRequest request, HttpServletResponse response, Model model){
+    public String loginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "login";
     }
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public String loginPost(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam Map<String, String> body){
-        String page = "login";
-        if (StringUtil.isEqual(body.get("submit"), SIGN_IN)){
+    public String loginPost(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam Map<String, String> body) throws Throwable {
+        if (StringUtil.isEqual(body.get("submit"), SIGN_IN)) {
             CheckLoginResult result = memberFacade.checkLogin(CheckLoginRequest.builder()
                     .username(body.get(USERNAME))
                     .password(EncryptionUtil.sha256Hash(body.get(PASSWORD)))
                     .build());
 
-            if (null!=result && result.isSuccess() && result.isExist() && StringUtil.isNotBlank(result.getUserId())){
-                boolean isSessionSuccess = sessionService.saveLoginSession(request.getSession(), result.getUserId());
-                if (!isSessionSuccess){
-                    return page;
-                }
-
+            if (null == result || !result.isSuccess() || !result.isExist()) {
+                model.addAttribute("message", "Username or password is wrong");
+                return loginPage(request,response,model);
             }
 
-            page = LoginControllerHelper.buildRedirectPage(result, model);
+            if (StringUtil.isNotBlank(result.getUserId())) {
+                boolean isSessionSuccess = sessionService.saveLoginSession(request.getSession(), result.getUserId());
+                if (!isSessionSuccess) {
+                    model.addAttribute("message", "Something is wrong, please try again");
+                    return loginPage(request, response, model);
+                }
+            }
+
         }
-        return "redirect:"+page;
+        response.sendRedirect("index");
+        return "redirect:/index";
     }
 
     @RequestMapping(value = {"/register"}, method = RequestMethod.GET)
     @ResponseStatus(value = HttpStatus.OK)
-    public String registerPage(HttpServletRequest request, HttpServletResponse response, Model model){
+    public String registerPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         return "register";
     }
 
     @RequestMapping(value = {"/register"}, method = RequestMethod.POST)
     @ResponseStatus(value = HttpStatus.OK)
-    public String registerPost(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam Map<String, String> body){
+    public String registerPost(HttpServletRequest request, HttpServletResponse response, Model model, @RequestParam Map<String, String> body) {
         String page = "register";
 
-        if (StringUtil.isEqual(body.get("submit"), REGISTER)){
+        if (StringUtil.isEqual(body.get("submit"), REGISTER)) {
             boolean pwd = LoginControllerHelper.isPasswordSame(body.get("password"), body.get("repassword"), model);
-            if (!pwd){
-                return "redirect:/"+page;
+            if (!pwd) {
+                return "redirect:/" + page;
             }
 
             RegisterMemberResult result = memberFacade.registerMember(LoginControllerHelper.buildRegisterMemberRequest(body));
-            if (result.isSuccess()){
+            if (result.isSuccess()) {
                 page = "index";
                 sessionService.saveLoginSession(request.getSession(), result.getUserId());
             }
         }
-        return "redirect:/"+page;
+        return "redirect:/" + page;
     }
 
     // this method is to avoid browser return 404
-    @RequestMapping(value = "/favicon.ico") @ResponseBody
-    public void disableFavicon(){}
+    @RequestMapping(value = "/favicon.ico")
+    @ResponseBody
+    public void disableFavicon() {
+    }
 
 }

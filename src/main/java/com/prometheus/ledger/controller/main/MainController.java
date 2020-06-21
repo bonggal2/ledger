@@ -21,7 +21,6 @@ public class MainController implements ErrorController {
     @RequestMapping(value = {"/","/index"}, method = RequestMethod.GET)
     public String mainPage(HttpServletRequest request, HttpServletResponse response, Model model){
         GetLoginSessionResult result = sessionService.getLoginSession(request.getSession());
-        System.out.println(result.toJsonString());
         model.addAttribute("userId", result.getUserId());
         return "index";
     }
