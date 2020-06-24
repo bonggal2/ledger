@@ -31,6 +31,7 @@ public class SessionServiceImpl implements SessionService{
 
         String sessionValue = EncryptionUtil.encrypt(sessionObject.toJsonString(), sessionEncryptionKey);
         session.setAttribute(LOGIN_SESSION_KEY, sessionValue);
+        session.setMaxInactiveInterval(3);
         return true;
     }
 
