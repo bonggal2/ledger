@@ -36,9 +36,10 @@ public class AdminMainController {
     private static final String PASSWORD = "password";
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-    @ResponseStatus(value = HttpStatus.OK)
     public String adminLoginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
-
+        if(StringUtil.isNotBlank(sessionService.getLoginSession(request.getSession()).getUserId())){
+            return "redirect:/admin/home";
+        }
         return "admin/login";
     }
 
@@ -53,14 +54,14 @@ public class AdminMainController {
                 return adminLoginPage(request, response, model);
             }
 
-            boolean isSessionSuccess = sessionService.saveLoginSession(request.getSession(), result.getAdminId());
+            boolean isSessionSuccess = sessionService.saveAdminLoginSession(request.getSession(), result.getAdminId());
             if (!isSessionSuccess) {
                 model.addAttribute("message", "Something is wrong, please try again");
                 return adminLoginPage(request, response, model);
             }
 
         }
-        response.sendRedirect("admin/home");
+        response.sendRedirect("home");
         return "redirect:/admin/home";
     }
 

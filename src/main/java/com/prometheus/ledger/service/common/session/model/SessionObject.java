@@ -4,6 +4,7 @@ import com.prometheus.ledger.core.model.BaseModel;
 
 public class SessionObject extends BaseModel {
     private String userId;
+    private boolean isAdmin;
     private long timestamp;
 
     public String getUserId() {
@@ -20,5 +21,13 @@ public class SessionObject extends BaseModel {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

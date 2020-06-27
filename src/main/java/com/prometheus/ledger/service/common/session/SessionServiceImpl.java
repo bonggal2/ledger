@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
-import java.util.Map;
 
 public class SessionServiceImpl implements SessionService{
 
@@ -29,9 +28,7 @@ public class SessionServiceImpl implements SessionService{
         sessionObject.setUserId(userId);
         sessionObject.setTimestamp(getCurrentTimestamp());
 
-        String sessionValue = EncryptionUtil.encrypt(sessionObject.toJsonString(), sessionEncryptionKey);
-        session.setAttribute(LOGIN_SESSION_KEY, sessionValue);
-        session.setMaxInactiveInterval(1800); // set inactive time to 30 minutes
+        createSession(session, sessionObject);
         return true;
     }
 
@@ -46,8 +43,6 @@ public class SessionServiceImpl implements SessionService{
             return result;
         }
 
-        //
-
         String sessionValue = EncryptionUtil.decrypt(session.getAttribute(LOGIN_SESSION_KEY).toString(), sessionEncryptionKey);
         JSONObject sessionJson = JSONUtil.convertStringToJSONObject(sessionValue);
         if (null == sessionJson || !sessionJson.containsKey("userId") || !sessionJson.containsKey("timestamp")){
@@ -58,11 +53,33 @@ public class SessionServiceImpl implements SessionService{
             return result;
         }
 
+        boolean isAdmin = (boolean)sessionJson.get("isAdmin");
+        result.setAdmin(isAdmin);
         result.setUserId(sessionJson.get("userId").toString());
         result.setTimestamp(Long.parseLong(sessionJson.get("timestamp").toString()));
         result.setSuccess(true);
 
         return result;
+    }
+
+    @Override
+    public boolean saveAdminLoginSession(HttpSession session, String adminId) {
+        if (StringUtil.isBlank(adminId)){
+            return false;
+        }
+
+        SessionObject sessionObject = new SessionObject();
+        sessionObject.setUserId(adminId);
+        sessionObject.setAdmin(true);
+        sessionObject.setTimestamp(getCurrentTimestamp());
+        createSession(session, sessionObject);
+        return true;
+    }
+
+    private void createSession(HttpSession session, SessionObject sessionObject){
+        String sessionValue = EncryptionUtil.encrypt(sessionObject.toJsonString(), sessionEncryptionKey);
+        session.setAttribute(LOGIN_SESSION_KEY, sessionValue);
+        session.setMaxInactiveInterval(1800); // set inactive time to 30 minutes
     }
 
     private long getCurrentTimestamp(){
