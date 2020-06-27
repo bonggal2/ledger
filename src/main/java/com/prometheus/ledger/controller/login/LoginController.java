@@ -32,7 +32,6 @@ public class LoginController {
     private SessionService sessionService;
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-    @ResponseStatus(value = HttpStatus.OK)
     public String loginPage(HttpServletRequest request, HttpServletResponse response, Model model) {
         if(StringUtil.isNotBlank(sessionService.getLoginSession(request.getSession()).getUserId())){
             return "redirect:/index";
