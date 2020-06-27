@@ -34,4 +34,13 @@
         </property>
     </bean>
 
+    <bean id="checkAdminLoginProcessor" class="com.prometheus.ledger.service.impl.admin.processor.CheckAdminLoginProcessor"/>
+    <bean id="adminFacade" class="com.prometheus.ledger.service.impl.admin.AdminFacadeImpl">
+        <property name="checkAdminLoginProcessors">
+            <list>
+                <ref bean="checkAdminLoginProcessor"/>
+            </list>
+        </property>
+    </bean>
+
 </beans>
