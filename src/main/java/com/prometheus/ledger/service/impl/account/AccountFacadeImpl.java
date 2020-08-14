@@ -22,7 +22,7 @@ public class AccountFacadeImpl implements AccountFacade {
         return result;
     }
 
-    public static void setQueryAccountListProcessors(List<Processor<BaseProcessContext>> queryAccountListProcessors) {
+    public void setQueryAccountListProcessors(List<Processor<BaseProcessContext>> queryAccountListProcessors) {
         AccountFacadeImpl.queryAccountListProcessors = queryAccountListProcessors;
     }
 }
