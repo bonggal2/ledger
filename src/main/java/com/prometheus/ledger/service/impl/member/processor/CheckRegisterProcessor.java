@@ -33,7 +33,7 @@ public class CheckRegisterProcessor implements Processor<BaseProcessContext> {
     }
 
     @Override
-    public void doProcess(BaseProcessContext context) {
+    public void doProcess(BaseProcessContext context) throws Exception {
         RegisterMemberRequest request = (RegisterMemberRequest) context.getRequest();
         MemberDTO memberDTO = memberRepository.findByUsername(request.getMember().getUsername());
         AssertUtil.isNull(memberDTO, ErrorCode.SYSTEM_ERROR,
