@@ -16,6 +16,7 @@
     <bean id="queryMemberProcessor" class="com.prometheus.ledger.service.impl.member.processor.QueryMemberProcessor"/>
     <bean id="checkLoginProcessor" class="com.prometheus.ledger.service.impl.member.processor.CheckLoginProcessor"/>
     <bean id="registerMemberProcessor" class="com.prometheus.ledger.service.impl.member.processor.RegisterMemberProcessor"/>
+    <bean id="checkRegisterProcessor" class="com.prometheus.ledger.service.impl.member.processor.CheckRegisterProcessor"/>
     <bean id="memberFacade" class="com.prometheus.ledger.service.impl.member.MemberFacadeImpl">
         <property name="queryMemberProcessors">
             <list>
@@ -29,6 +30,7 @@
         </property>
         <property name="registerMemberProcessors">
             <list>
+                <ref bean="checkRegisterProcessor"/>
                 <ref bean="registerMemberProcessor"/>
             </list>
         </property>
