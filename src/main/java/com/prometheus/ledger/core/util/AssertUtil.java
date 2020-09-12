@@ -17,7 +17,7 @@ public class AssertUtil {
         }
     }
 
-    public static void isNull(Object object, BaseErrorCode errorCode, String message) {
+    public static void isNull(Object object, BaseErrorCode errorCode, String message) throws Exception {
         try {
             String exceptionMessage = errorCode.getErrorCode() + ":" + errorCode.getErrorMessage()
                     + " - " + message;
@@ -26,6 +26,7 @@ public class AssertUtil {
             }
         }catch (Throwable e){
             e.printStackTrace();
+            throw new Exception();
         }
     }
 
