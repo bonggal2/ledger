@@ -6,7 +6,7 @@ import com.prometheus.ledger.core.model.error.ErrorContext;
 import java.util.Map;
 
 public class BaseResult extends BaseModel {
-    private boolean success;
+    private boolean success = false;
     private Map<String, String> extendInfo;
     private ErrorContext errorContext;
 
