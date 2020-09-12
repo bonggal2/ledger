@@ -12,4 +12,7 @@ public interface MemberRepository extends JpaRepository<MemberDTO, String> {
 
     @Query(value = "SELECT * FROM prod_member WHERE username = ?1 AND password = ?2", nativeQuery = true)
     List<MemberDTO> findByUsernameAndPassword(String username, String password);
+
+    @Query(value = "SELECT * FROM prod_member WHERE username = ?1 LIMIT 1", nativeQuery = true)
+    MemberDTO findByUsername(String username);
 }
